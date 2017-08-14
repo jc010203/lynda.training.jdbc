@@ -7,18 +7,18 @@ public class Main {
     private static final String SQL = "select * from states";
 
     public static void main(String[] args) {
-	// write your code here
 
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
 
-        try {
-            conn = DBUtil.getConnection(DBType.MYSLQ);
+        try(
+                Connection conn = DBUtil.getConnection(DBType.MYSLQ);
+                Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet rs = stmt.executeQuery(SQL);
+                )
+        {
+
             System.out.println("connected!");
 
-            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = stmt.executeQuery(SQL);
+
             rs.last();
 
 
